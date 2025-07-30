@@ -14,10 +14,14 @@ const newFormVal = new FormValidator(validationConfig, addTodoForm);
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
+  //callback function in this listener allows user to close "add todo" modal with Esc
+  window.addEventListener('keydown', escapeToClose);
 };
 
 const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
+  //removes listener upon closing modal to optimize performance
+  window.removeEventListener('keydown', escapeToClose);
 };
 
 // The logic in this function is all handled in the Todo class.
@@ -60,3 +64,11 @@ initialTodos.forEach((item) => {
 });
 
 newFormVal.enableValidation();
+
+//function for closing open modal with Esc key
+function escapeToClose(evt) {
+  const currentOpenModal = document.querySelector(".popup_visible");
+  if (evt.keyCode === 27) {
+    closeModal(currentOpenModal);
+  }
+}
