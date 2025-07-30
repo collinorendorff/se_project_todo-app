@@ -69,6 +69,6 @@ newFormVal.enableValidation();
 function escapeToClose(evt) {
   const currentOpenModal = document.querySelector(".popup_visible");
   if (evt.keyCode === 27) {
-    closeModal(currentOpenModal);
+    if (currentOpenModal) closeModal(currentOpenModal);
   }
 }
