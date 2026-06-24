@@ -82,9 +82,9 @@ addTodoForm.addEventListener("submit", (evt) => {
 newFormVal.enableValidation();
 
 //function for closing open modal with Esc key
-function escapeToClose(evt) {
-  const currentOpenModal = document.querySelector(".popup_visible");
-  if (evt.keyCode === 27) {
-    if (currentOpenModal) closeModal(currentOpenModal);
-  }
-}
+// function escapeToClose(evt) {
+//   const currentOpenModal = document.querySelector(".popup_visible");
+//   if (evt.keyCode === 27) {
+//     if (currentOpenModal) closeModal(currentOpenModal);
+//   }
+// }
