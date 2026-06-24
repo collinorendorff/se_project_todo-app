@@ -4,14 +4,18 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
+import PopupWithForm from '../components/PopupWithForm.js';
 
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
-const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
+const addTodoPopupEl = document.querySelector("#add-todo-popup");
+const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
+const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 
 const newFormVal = new FormValidator(validationConfig, addTodoForm);
+
+const addTodoPopup = new PopupWithForm("#add-todo-popup", () => {});
+addTodoPopup.setEventListeners();
 
 // The logic in this function is all handled in the Todo class.
 const generateTodo = (data) => {
@@ -31,25 +35,25 @@ const section = new Section({
 //call section instance's renderItems() method
 section.renderItems();
 
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-  //callback function in this listener allows user to close "add todo" modal with Esc
-  window.addEventListener('keydown', escapeToClose);
-};
+// const openModal = (modal) => {
+//   modal.classList.add("popup_visible");
+//   //callback function in this listener allows user to close "add todo" modal with Esc
+//   window.addEventListener('keydown', escapeToClose);
+// };
 
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-  //removes listener upon closing modal to optimize performance
-  window.removeEventListener('keydown', escapeToClose);
-};
+// const closeModal = (modal) => {
+//   modal.classList.remove("popup_visible");
+//   //removes listener upon closing modal to optimize performance
+//   window.removeEventListener('keydown', escapeToClose);
+// };
 
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
+  addTodoPopup.open();
 });
 
-addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
-});
+// addTodoCloseBtn.addEventListener("click", () => {
+//   addTodoPopup.close();
+// });
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -66,7 +70,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   const values = { id, name, date };
   const todo = generateTodo(values);
   todosList.append(todo);
-  closeModal(addTodoPopup);
+  addTodoPopup.close();
   newFormVal.resetValidation();
 });
 
