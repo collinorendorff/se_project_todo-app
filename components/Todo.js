@@ -1,65 +1,64 @@
 export default class Todo {
-    constructor(data, selector, handleCheck, handleDelete) {
-        this._data = data;
-        this._templateElement = document.querySelector(selector);
-        this._handleCheck = handleCheck;
-        this._handleDelete = handleDelete;
+  constructor(data, selector, handleCheck, handleDelete) {
+    this._data = data;
+    this._templateElement = document.querySelector(selector);
+    this._handleCheck = handleCheck;
+    this._handleDelete = handleDelete;
+  }
+  // Private function for generating checkbox id and for attributes.
+  // The id will initially be undefined for new todos.
+  _generateCheckboxEl() {
+    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
+    const todoLabel = this._todoElement.querySelector(".todo__label");
+    this._todoCheckboxEl.checked = this._data.completed;
+    this._todoCheckboxEl.id = `todo-${this._data.id}`;
+    todoLabel.setAttribute("for", `todo-${this._data.id}`);
+  }
+  // If a due date has been set, parsing this it with `new Date` will return a
+  // number. If so, we display a string version of the due date in the todo.
+  _generateDateEl() {
+    const todoDate = this._todoElement.querySelector(".todo__date");
+    const dueDate = new Date(this._data.date);
+    if (!isNaN(dueDate)) {
+      todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })}`;
     }
-    // Private function for generating checkbox id and for attributes.
-    // The id will initially be undefined for new todos.
-    _generateCheckboxEl() {
-        this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
-        const todoLabel = this._todoElement.querySelector(".todo__label");
-        this._todoCheckboxEl.checked = this._data.completed;
-        this._todoCheckboxEl.id = `todo-${this._data.id}`;
-        todoLabel.setAttribute("for", `todo-${this._data.id}`);
-    }
-    // If a due date has been set, parsing this it with `new Date` will return a
-    // number. If so, we display a string version of the due date in the todo.
-    _generateDateEl() {
-        const todoDate = this._todoElement.querySelector(".todo__date");
-        const dueDate = new Date(this._data.date);
-        if (!isNaN(dueDate)) {
-          todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}`;
-        }
-    }
+  }
 
-    _setEventListeners() {
-        this._todoCheckboxEl.addEventListener('change', () => {
-            this._data.completed = !this._data.completed;
-            //console.log(`toggled, new checked value is: ${this._data.completed}`);
-            this._handleCheck(this._data.completed);
-        })
+  _setEventListeners() {
+    this._todoCheckboxEl.addEventListener("change", () => {
+      this._data.completed = !this._data.completed;
+      this._handleCheck(this._data.completed);
+    });
 
-        this._todoDeleteBtn.addEventListener('click', () => {
-            this._todoElement.remove();
-            if (this._data.completed) this._handleCheck(false);
-            this._handleDelete();
-        });
-    }
+    this._todoDeleteBtn.addEventListener("click", () => {
+      this._todoElement.remove();
+      if (this._data.completed) this._handleCheck(false);
+      this._handleDelete();
+    });
+  }
 
-    getView() {
-        this._todoElement = this._templateElement.content
-          .querySelector(".todo")
-          .cloneNode(true);
-        const todoNameEl = this._todoElement.querySelector(".todo__name");
+  getView() {
+    this._todoElement = this._templateElement.content
+      .querySelector(".todo")
+      .cloneNode(true);
+    const todoNameEl = this._todoElement.querySelector(".todo__name");
 
-        //assigning values and displaying to cloned template variables
-        todoNameEl.textContent = this._data.name;
-        this._generateDateEl();
-        //calling function to generate this element's checkbox element
-        this._generateCheckboxEl();
+    //assigning values and displaying to cloned template variables
+    todoNameEl.textContent = this._data.name;
+    this._generateDateEl();
+    //calling function to generate this element's checkbox element
+    this._generateCheckboxEl();
 
-        //selecting delete button before setting listener onto it
-        this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
+    //selecting delete button before setting listener onto it
+    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
-        //calling function to set event listeners
-        this._setEventListeners();
+    //calling function to set event listeners
+    this._setEventListeners();
 
-        return this._todoElement;
-    }
+    return this._todoElement;
+  }
 }
