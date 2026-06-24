@@ -3,12 +3,9 @@ export default class Popup {
         this._popupElement = document.querySelector(popupSelector);
         this._popupCloseBtn = this._popupElement.querySelector(".popup__close");
 
-        //using .bind() so that the "this" keyword doesn't try to close the document
-        //upon execution
-        this._handleEscapeClose = this._handleEscapeClose.bind(this);
     }
 
-    _handleEscapeClose(evt) {
+    _handleEscapeClose = (evt) => {
         if (evt.key === 'Escape') {
             this.close();
         }
