@@ -5,12 +5,15 @@ import Todo from "../components/Todo.js";
 import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import TodoCounter from '../components/TodoCounter.js';
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupEl = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
+
+const todoCounter = new TodoCounter(initialTodos, '.counter__text');
 
 const newFormVal = new FormValidator(validationConfig, addTodoForm);
 
@@ -35,7 +38,7 @@ section.renderItems();
 const addTodoPopup = new PopupWithForm("#add-todo-popup", (values) => {
   // All of the below logic of getting field values moved to private method in
   // PopupWithForm class
-  
+
   // //evt.preventDefault();
   // const name = evt.target.name.value;
   // const dateInput = evt.target.date.value;
