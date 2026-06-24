@@ -17,10 +17,19 @@ const todoCounter = new TodoCounter(initialTodos, '.counter__text');
 
 const newFormVal = new FormValidator(validationConfig, addTodoForm);
 
+function handleCheck(completed) {
+  todoCounter.updateCompleted(completed);
+}
+
+function handleDelete() {
+  todoCounter.updateTotal(false);
+}
+
 // The logic in this function is all handled in the Todo class.
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
   const todoElement = todo.getView();
+  todoCounter.updateTotal(true);
   return todoElement;
 };
 
@@ -75,10 +84,6 @@ addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
 });
 
-// addTodoCloseBtn.addEventListener("click", () => {
-//   addTodoPopup.close();
-// });
-
 // This event listener adding was passed into the PopupWithForm instance above as a 
 // callback function
 // addTodoForm.addEventListener("submit", (evt) => {
@@ -100,17 +105,4 @@ addTodoButton.addEventListener("click", () => {
 //   newFormVal.resetValidation();
 // });
 
-// initialTodos.forEach((item) => {
-//   const todo = generateTodo(item);
-//   todosList.append(todo);
-// });
-
 newFormVal.enableValidation();
-
-//function for closing open modal with Esc key
-// function escapeToClose(evt) {
-//   const currentOpenModal = document.querySelector(".popup_visible");
-//   if (evt.keyCode === 27) {
-//     if (currentOpenModal) closeModal(currentOpenModal);
-//   }
-// }

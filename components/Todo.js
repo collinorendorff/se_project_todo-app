@@ -1,7 +1,9 @@
 export default class Todo {
-    constructor(data, selector) {
+    constructor(data, selector, handleCheck, handleDelete) {
         this._data = data;
         this._templateElement = document.querySelector(selector);
+        this._handleCheck = handleCheck;
+        this._handleDelete = handleDelete;
     }
     // Private function for generating checkbox id and for attributes.
     // The id will initially be undefined for new todos.
@@ -30,10 +32,13 @@ export default class Todo {
         this._todoCheckboxEl.addEventListener('change', () => {
             this._data.completed = !this._data.completed;
             //console.log(`toggled, new checked value is: ${this._data.completed}`);
+            this._handleCheck(this._data.completed);
         })
 
         this._todoDeleteBtn.addEventListener('click', () => {
             this._todoElement.remove();
+            if (this._data.completed) this._handleCheck(false);
+            this._handleDelete();
         });
     }
 
