@@ -14,9 +14,6 @@ const todosList = document.querySelector(".todos__list");
 
 const newFormVal = new FormValidator(validationConfig, addTodoForm);
 
-const addTodoPopup = new PopupWithForm("#add-todo-popup", () => {});
-addTodoPopup.setEventListeners();
-
 // The logic in this function is all handled in the Todo class.
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
@@ -35,6 +32,30 @@ const section = new Section({
 //call section instance's renderItems() method
 section.renderItems();
 
+const addTodoPopup = new PopupWithForm("#add-todo-popup", (values) => {
+  // All of the below logic of getting field values moved to private method in
+  // PopupWithForm class
+  
+  // //evt.preventDefault();
+  // const name = evt.target.name.value;
+  // const dateInput = evt.target.date.value;
+
+  // // Create a date object and adjust for timezone
+  // const date = new Date(dateInput);
+  // date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+  // // Create new unique ID with UUID imported function
+  // const id = uuidv4();
+
+  // const values = { id, name, date };
+  const todo = generateTodo(values);
+  section.addItem(todo);
+  addTodoPopup.close();
+  newFormVal.resetValidation();
+});
+addTodoPopup.setEventListeners();
+
+// These open/close functions below were moved/refactored into the Popup class
 // const openModal = (modal) => {
 //   modal.classList.add("popup_visible");
 //   //callback function in this listener allows user to close "add todo" modal with Esc
@@ -55,29 +76,31 @@ addTodoButton.addEventListener("click", () => {
 //   addTodoPopup.close();
 // });
 
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
+// This event listener adding was passed into the PopupWithForm instance above as a 
+// callback function
+// addTodoForm.addEventListener("submit", (evt) => {
+//   evt.preventDefault();
+//   const name = evt.target.name.value;
+//   const dateInput = evt.target.date.value;
 
-  // Create a date object and adjust for timezone
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+//   // Create a date object and adjust for timezone
+//   const date = new Date(dateInput);
+//   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
-  // Create new unique ID with UUID imported function
-  const id = uuidv4();
+//   // Create new unique ID with UUID imported function
+//   const id = uuidv4();
 
-  const values = { id, name, date };
-  const todo = generateTodo(values);
-  todosList.append(todo);
-  addTodoPopup.close();
-  newFormVal.resetValidation();
-});
+//   const values = { id, name, date };
+//   const todo = generateTodo(values);
+//   todosList.append(todo);
+//   addTodoPopup.close();
+//   newFormVal.resetValidation();
+// });
 
-/*initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
-});*/
+// initialTodos.forEach((item) => {
+//   const todo = generateTodo(item);
+//   todosList.append(todo);
+// });
 
 newFormVal.enableValidation();
 
